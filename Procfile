@@ -1,1 +1,1 @@
-web: gunicorn kodona.wsgi --log-file -
+web: gunicorn kodona.wsgi
