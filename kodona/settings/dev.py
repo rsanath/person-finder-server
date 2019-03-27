@@ -25,9 +25,7 @@ SECRET_KEY = 'v-e*#-w-5#+!@w1s=s(9p$7@#o$clv-vf!=87+f$qv3ctje1wm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'kodona.herokuapp.com'
-]
+ALLOWED_HOSTS = []
 
 
 # Application definition
