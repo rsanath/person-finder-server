@@ -23,7 +23,7 @@ class Complaint(models.Model):
     poi = models.CharField(max_length=255, verbose_name='place of incident')
     fir = models.CharField(max_length=255, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUSES, default=INITIALIZED)
-    status_msg = models.CharField(max_length=400, null=True, blank=True)
+    status_msg = models.CharField(max_length=400, null=True)
     submitter = models.ForeignKey('users.User', on_delete=models.DO_NOTHING, related_name='complaints')
 
     created_at = models.DateTimeField(auto_now_add=True)

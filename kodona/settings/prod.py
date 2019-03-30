@@ -135,3 +135,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# celery and redis config
+
+REDIS_HOST = 'ec2-18-202-206-86.eu-west-1.compute.amazonaws.com'
+REDIS_USER = 'h'
+REDIS_PASSWORD = 'p5b9194b872d0e00db6428f6b7c500a01823e30cc5f8dfad9c74fee102dd16b3c'
+REDIS_PORT = '30739'
+REDIS_URI = 'redis://h:p5b9194b872d0e00db6428f6b7c500a01823e30cc5f8dfad9c74fee102dd16b3c@ec2-18-202-206-86.eu-west-1.compute.amazonaws.com:30739'
+
+BROKER_URL = REDIS_URI
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600} 
+CELERY_RESULT_BACKEND = REDIS_URI

@@ -1,7 +1,20 @@
+# django 
 Django
 djangorestframework
-markdown
 django-filter
-psycopg2-binary
-gunicorn
 drf-extensions
+requests
+markdown
+
+# prod wsgi server
+gunicorn
+
+# postgres driver
+psycopg2-binary
+
+# opencv stuff
+pillow
+opencv-python
+
+# background jobs
+Celery
