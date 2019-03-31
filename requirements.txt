@@ -14,8 +14,7 @@ psycopg2-binary
 
 # opencv stuff
 pillow
-opencv-python
-opencv-contrib-python
+opencv-python-headless
 
 # background jobs
 celery[redis]
