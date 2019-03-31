@@ -17,4 +17,10 @@ pillow
 opencv-python
 
 # background jobs
-Celery
+git+https://github.com/celery/celery.git # celery latest version
+redis
+celery[redis]
+redis-py
+
+# file bucket
+google-cloud-storage

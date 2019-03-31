@@ -1,0 +1,1 @@
+print('img_processor init')

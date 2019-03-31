@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
-
 class Complaint(models.Model):
     INITIALIZED = 'INITIALIZED'
     WAITING_FOR_APPROVAL = 'WAIT_FOR_APP'
@@ -21,9 +18,9 @@ class Complaint(models.Model):
     name = models.CharField(max_length=255, unique=True)
     doi = models.DateField('date of incident')
     poi = models.CharField(max_length=255, verbose_name='place of incident')
-    fir = models.CharField(max_length=255, null=True, blank=True)
+    fir = models.TextField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUSES, default=INITIALIZED)
-    status_msg = models.CharField(max_length=400, null=True)
+    status_msg = models.TextField(null=True)
     submitter = models.ForeignKey('users.User', on_delete=models.DO_NOTHING, related_name='complaints')
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -69,7 +66,7 @@ class Searchee(models.Model):
 
 class SearcheeSample(models.Model):
     searchee = models.ForeignKey(Searchee, on_delete=models.CASCADE, related_name='samples')
-    image_url = models.CharField(max_length=300)
+    image_url = models.TextField()
     userability = models.IntegerField(null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -90,7 +87,7 @@ class Search(models.Model):
     
     searchee = models.ForeignKey(Searchee, on_delete=models.CASCADE, related_name='searches')    
     name = models.CharField(max_length=255)
-    video = models.CharField(max_length=300, verbose_name='video source url')
+    video = models.TextField(verbose_name='video source url')
     location = models.CharField(max_length=255, null=True, verbose_name='name of the location')
     lat = models.CharField(max_length=255, null=True)
     long = models.CharField(max_length=255, null=True)
@@ -100,6 +97,11 @@ class Search(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if (self.pk):
+            pass
+        super(Search, self).save(*args, **kwargs)
+ 
     def __str__(self):
         return self.name
 
@@ -111,7 +113,7 @@ class SearchResult(models.Model):
     y1 = models.IntegerField(default=0, verbose_name='y1 coordinate')
     x2 = models.IntegerField(default=0, verbose_name='x2 coordinate')
     y2 = models.IntegerField(default=0, verbose_name='y2 coordinate')
-    image = models.CharField(max_length=300, null=True)
+    image = models.TextField(null=True)
     confidence = models.IntegerField(null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

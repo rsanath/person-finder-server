@@ -1,4 +1,5 @@
 import os
+import uuid
 import cv2
 import numpy as np
 
@@ -8,18 +9,27 @@ def mkdir_path(path):
         os.mkdir(path)
 
 class FaceRecogniser:
+    output_path = 'img_processor/outputs/'
     trainer_path = 'img_processor/trainer/'
-    haar_cascade_path = 'img_processor/haarcascade_frontalface_default.xml' 
+    haar_cascade_path = 'img_processor/haarcascade_frontalface_default.xml'
     
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     detector = cv2.CascadeClassifier(haar_cascade_path)
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
-    def train_model(self, faces, ids):
-        self.recognizer.train(faces, np.array(ids))
+    def __init__(self):
+        mkdir_path(self.output_path)
         mkdir_path(self.trainer_path)
-        self.recognizer.save(self.trainer_path + 'trainer.yml')
+
+    def train_model(self, faces, ids):
+        trainer_file = self.trainer_path + 'trainer.yml'
+
+        if os.path.isfile(trainer_file):
+            self.recognizer.read(trainer_file)
+            
+        self.recognizer.train(faces, np.array(ids))
+        self.recognizer.save(trainer_file)
 
 
     def process_video(self, video_url):
@@ -32,19 +42,17 @@ class FaceRecogniser:
         minW = 0.1*vid.get(3)
         minH = 0.1*vid.get(4)
 
-        success, img = vid.read()
-        step = 20 
+        step = 20
 
-        timestamp = vid.get(cv2.CAP_PROP_POS_MSEC) / 1000
-        frame = vid.get(cv2.CAP_PROP_POS_FRAMES)
-
-        while success:
-            # process every Nth frame
-            # if frame % step != 0:
-            #     continue
-
+        while True:            
             success, img = vid.read()
+
+            timestamp = vid.get(cv2.CAP_PROP_POS_MSEC) / 1000
+            frame = vid.get(cv2.CAP_PROP_POS_FRAMES)
             
+            if frame % step != 0:
+                continue
+
             # display the time 
             cv2.putText(img, str(timestamp), (20, 20), self.font, 1, (255, 255, 255), 2)
             
@@ -67,12 +75,19 @@ class FaceRecogniser:
                     cv2.putText(img, str(id), (x+5, y-5), self.font, 1, (255, 255, 255), 2)
                     cv2.putText(img, str(confidence_text), (x+5, y+h-5), self.font, 1, (255, 255, 0), 1)
                     
+                    snap_path = self.output_path + uuid.uuid4() + '.png'
+                    cv2.imwrite(snap_path, img)
+
                     results.append(
                         dict(
                             searchee_id=id,
                             confidence=confidence,
                             timestamp=timestamp,
-                            snap=img
+                            image=snap_path,
+                            x1=x,
+                            y1=y,
+                            x2=x+w,
+                            y2=y+h
                         )    
                     )
         
