@@ -5,6 +5,7 @@ import numpy as np
 from PIL import Image
 import os
 from .face_recogniser import FaceRecogniser
+from . import util
 
 
 #
@@ -21,12 +22,21 @@ class ImageProcessor:
     recogniser = FaceRecogniser()
 
     def add_searchee(self, ids, images):
+
+        # have a ref to the downloaded images so that we can remove them after training
+        downloaded_images = []
+
         for i in range(len(ids)):
-            self.fetch_searchee_images(ids[i], images[i])
+            x = self.fetch_searchee_images(ids[i], images[i])
+            downloaded_images += x
         
         faces, ids = self.get_train_data()
         self.recogniser.train_model(faces, ids)
         print("\n [INFO] {0} faces trained.".format(len(np.unique(ids))))
+
+        print('\n [INFO] Removing trainer intermediates')
+        for i in downloaded_images:
+            util.rm(i)
 
 
     def find_searchee(self, video_url):
@@ -37,9 +47,14 @@ class ImageProcessor:
     def fetch_searchee_images(self, searchee_id, images):
         os.makedirs(self.dataset_path, exist_ok=True)
 
+        samples = []
+
         for i in range(len(images)):
             img_dest = self.dataset_path + '/searchee.{}.{}.png'.format(searchee_id, i)
             image_url = images[i]
+            
+            samples.append(img_dest)
+
             try:
                 response = requests.get(image_url)
             except:
@@ -50,6 +65,7 @@ class ImageProcessor:
 
             with open(img_dest, 'wb') as f:
                 f.write(response.content)
+        return samples
 
 
     def get_train_data(self):

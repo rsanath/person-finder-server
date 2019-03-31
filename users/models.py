@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 
 class User(models.Model):
     CLIENT = 'CLIENT'
@@ -31,7 +29,7 @@ class User(models.Model):
     ph_num = models.CharField(max_length=200, unique=True)
     password = models.CharField(max_length=16)
     address = models.CharField(max_length=200, blank=True, null=True)
-    image = models.CharField(max_length=200, blank=True, null=True)
+    image_url = models.TextField(blank=True, null=True)
     type = models.CharField(max_length=20,choices=USER_TYPES,default=CLIENT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -2,6 +2,12 @@ import os
 import uuid
 import cv2
 import numpy as np
+from . import util
+
+
+
+OUTPUT_IMG_WIDTH = 400
+
 
 def mkdir_path(path):
     if not os.access(path, os.F_OK):
@@ -42,9 +48,11 @@ class FaceRecogniser:
         minW = 0.1*vid.get(3)
         minH = 0.1*vid.get(4)
 
-        step = 20
-
-        while True:            
+        frames_processed = 0
+        step = 100
+        
+        success, img = vid.read()
+        while success:            
             success, img = vid.read()
 
             timestamp = vid.get(cv2.CAP_PROP_POS_MSEC) / 1000
@@ -53,8 +61,10 @@ class FaceRecogniser:
             if frame % step != 0:
                 continue
 
+            frames_processed += 1
+
             # display the time 
-            cv2.putText(img, str(timestamp), (20, 20), self.font, 1, (255, 255, 255), 2)
+            cv2.putText(img, str(timestamp), (30, 30), self.font, 1, (255, 255, 255), 2)
             
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -64,7 +74,7 @@ class FaceRecogniser:
                 minNeighbors=5,
                 minSize=(int(minW), int(minH)),
             )
-            
+
             for(x, y, w, h) in faces:
                 cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
                 id, confidence = self.recognizer.predict(gray[y:y+h, x:x+w])
@@ -75,8 +85,14 @@ class FaceRecogniser:
                     cv2.putText(img, str(id), (x+5, y-5), self.font, 1, (255, 255, 255), 2)
                     cv2.putText(img, str(confidence_text), (x+5, y+h-5), self.font, 1, (255, 255, 0), 1)
                     
-                    snap_path = self.output_path + uuid.uuid4() + '.png'
-                    cv2.imwrite(snap_path, img)
+                    snap_path = self.output_path + str(uuid.uuid4()) + '.png'
+                    print('\n [INFO] Writing frame at {}'.format(snap_path))
+                    
+                    try:
+                        cv2.imwrite(snap_path, util.resize(img, width=OUTPUT_IMG_WIDTH))
+                    except:
+                        snap_path = None
+                        print('\n [ERROR] Unable to write frame at {}'.format(snap_path))
 
                     results.append(
                         dict(
@@ -90,10 +106,9 @@ class FaceRecogniser:
                             y2=y+h
                         )    
                     )
-        
-            cv2.imshow('camera', img)
-            k = cv2.waitKey(10) & 0xff  # Press 'ESC' for exiting video
-            if k == 27:
-                break
+
+        print('\n [INFO] Processed video {}'.format(video_url))
+        print('\n [INFO] Processed {} frames'.format(frames_processed))
+        print('\n [INFO] # of results generated = {}'.format(len(results)))
 
         return results

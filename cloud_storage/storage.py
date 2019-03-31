@@ -1,16 +1,18 @@
-from . import storage_client as client
+from . import client
 from . import IMG_PROCESS_OUTPUT_BUCKET
 import os
 
 
 def upload_blob(bucket, source, dest):
     bucket = client.get_bucket(bucket)
+    
+    print('\n [INFO] Start Upload {} to {}.'.format(source, dest))
+        
     blob = bucket.blob(dest)
-
     blob.upload_from_filename(source)
     blob.make_public()
 
-    print('\n [INFO] File {} uploaded to {}.'.format(source, dest))
+    print('\n [INFO] Finish upload {} to {}.'.format(source, dest))
     return blob.public_url
 
 

@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models import signals
+from img_processor.tasks import start_search
+
 
 class Complaint(models.Model):
     INITIALIZED = 'INITIALIZED'
@@ -18,7 +21,7 @@ class Complaint(models.Model):
     name = models.CharField(max_length=255, unique=True)
     doi = models.DateField('date of incident')
     poi = models.CharField(max_length=255, verbose_name='place of incident')
-    fir = models.TextField(null=True, blank=True)
+    fir_url = models.TextField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUSES, default=INITIALIZED)
     status_msg = models.TextField(null=True)
     submitter = models.ForeignKey('users.User', on_delete=models.DO_NOTHING, related_name='complaints')
@@ -87,7 +90,7 @@ class Search(models.Model):
     
     searchee = models.ForeignKey(Searchee, on_delete=models.CASCADE, related_name='searches')    
     name = models.CharField(max_length=255)
-    video = models.TextField(verbose_name='video source url')
+    video_url = models.TextField(verbose_name='video source url')
     location = models.CharField(max_length=255, null=True, verbose_name='name of the location')
     lat = models.CharField(max_length=255, null=True)
     long = models.CharField(max_length=255, null=True)
@@ -96,15 +99,15 @@ class Search(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def save(self, *args, **kwargs):
-        if (self.pk):
-            pass
-        super(Search, self).save(*args, **kwargs)
  
     def __str__(self):
         return self.name
 
+def add_search_to_queue(sender, instance, created, **kwargs):
+    if (created):
+        start_search.delay(instance.id)
+
+signals.post_save.connect(add_search_to_queue, sender=Search)
 
 class SearchResult(models.Model):
     search = models.ForeignKey(Search, on_delete=models.CASCADE, related_name='results')
@@ -113,7 +116,7 @@ class SearchResult(models.Model):
     y1 = models.IntegerField(default=0, verbose_name='y1 coordinate')
     x2 = models.IntegerField(default=0, verbose_name='x2 coordinate')
     y2 = models.IntegerField(default=0, verbose_name='y2 coordinate')
-    image = models.TextField(null=True)
+    image_url = models.TextField(null=True)
     confidence = models.IntegerField(null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

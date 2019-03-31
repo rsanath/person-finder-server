@@ -1,1 +1,0 @@
-from kodona.celery import celery

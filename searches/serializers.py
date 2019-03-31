@@ -10,7 +10,7 @@ class ComplaintSerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'doi',
             'poi',
-            'fir',
+            'fir_url',
             'status',
             'status_msg',
             'created_at',
@@ -50,7 +50,7 @@ class SearchSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url',
             'name',
-            'video',
+            'video_url',
             'location',
             'lat',
             'long',
