@@ -19,8 +19,8 @@ class FaceRecogniser:
     trainer_path = 'img_processor/trainer/'
     haar_cascade_path = 'img_processor/haarcascade_frontalface_default.xml'
     
-    recognizer = cv2.face.LBPHFaceRecognizer_create()
     detector = cv2.CascadeClassifier(haar_cascade_path)
+    recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
