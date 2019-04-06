@@ -80,11 +80,11 @@ WSGI_APPLICATION = 'kodona.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dfm6ot655lb9k6',
-        'USER': 'mnaekznnwbzorw',
-        'PASSWORD': 'a55e99e72912708f5e5ac6dc6b3a87eeb7de75e10173784fb363469918789966',
-        'HOST': 'ec2-46-137-113-157.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432'
+        'HOST': '/cloudsql/kodona:us-central1:kodona-database',
+        'PORT': '5432',
+        'USER': 'kodona_admin',
+        'PASSWORD': 'password`',
+        'NAME': 'kodona'
     }
 }
 
@@ -148,3 +148,7 @@ REDIS_URI = 'redis://h:p5b9194b872d0e00db6428f6b7c500a01823e30cc5f8dfad9c74fee10
 BROKER_URL = REDIS_URI
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600} 
 CELERY_RESULT_BACKEND = REDIS_URI
+
+
+STATIC_ROOT = 'static'
+STATIC_URL = '/static/'

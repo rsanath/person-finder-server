@@ -6,7 +6,7 @@ from . import util
 
 
 
-OUTPUT_IMG_WIDTH = 400
+OUTPUT_IMG_WIDTH = 600
 
 
 def mkdir_path(path):
@@ -97,7 +97,7 @@ class FaceRecogniser:
                     results.append(
                         dict(
                             searchee_id=id,
-                            confidence=confidence,
+                            confidence=round(100 - confidence),
                             timestamp=timestamp,
                             image=snap_path,
                             x1=x,

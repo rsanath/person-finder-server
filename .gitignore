@@ -4,3 +4,4 @@ __pycache__/
 img_processor/dataset/
 img_processor/trainer/
 venv/
+gcs_storage_key.json

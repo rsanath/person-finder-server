@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.staticfiles',
     'django.contrib.sessions',
     'django.contrib.messages'
 ]
@@ -149,3 +150,7 @@ REDIS_URI = 'redis://localhost:6379/0'
 BROKER_URL = REDIS_URI
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600} 
 CELERY_RESULT_BACKEND = REDIS_URI
+
+
+STATIC_ROOT = 'static'
+STATIC_URL = '/static/'

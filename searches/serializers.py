@@ -20,6 +20,14 @@ class ComplaintSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SearcheeSerializer(serializers.HyperlinkedModelSerializer):
+    complaint = serializers.HyperlinkedRelatedField(
+        view_name='users-complaints-detail',
+        lookup_field='pk',
+        many=False,
+        read_only=False,
+        queryset=Complaint.objects.all()
+    )
+
     class Meta:
         model = Searchee
         fields = (
@@ -36,6 +44,9 @@ class SearcheeSerializer(serializers.HyperlinkedModelSerializer):
             'samples',
             'searches'
         )
+        # extra_kwargs = {
+        #     'complaint': {'view_name': 'complaints'}
+        # }
 
 
 class SearcheeSampleSerializer(serializers.HyperlinkedModelSerializer):

@@ -55,10 +55,10 @@ class Searchee(models.Model):
     full_name = models.CharField(max_length=255)
     dob = models.DateField(verbose_name='date of birth')
     sex = models.CharField(max_length=20,choices=GENDERS,null=True)
-    height_cm = models.DecimalField(verbose_name='height in cm',max_digits=3,decimal_places=2,null=True)
+    height_cm = models.IntegerField(verbose_name='height in cm', null=True)
     weight_kg = models.IntegerField(verbose_name='weight in kg', null=True)
-    skin_tone = models.CharField(max_length=20,choices=SKIN_TONES,null=True)
-    complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE, related_name='searchees')
+    skin_tone = models.CharField(max_length=20,choices=SKIN_TONES, null=True)
+    complaint = models.ForeignKey('searches.Complaint', on_delete=models.CASCADE, related_name='searchees')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
