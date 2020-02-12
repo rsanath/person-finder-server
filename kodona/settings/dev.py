@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '0.0.0.0',
     '10.0.2.2',
-    'localhost'
+    'localhost',
+    'kodona.appspot.com'
 ]
 
 

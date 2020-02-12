@@ -79,9 +79,11 @@ class FaceRecogniser:
                 cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
                 id, confidence = self.recognizer.predict(gray[y:y+h, x:x+w])
 
-                confidence_text = "  {0}%".format(round(100 - confidence))
+                confidence = round(100 - confidence)
 
-                if (confidence < 100):
+                confidence_text = "  {0}%".format(confidence)
+
+                if (confidence > 40):
                     cv2.putText(img, str(id), (x+5, y-5), self.font, 1, (255, 255, 255), 2)
                     cv2.putText(img, str(confidence_text), (x+5, y+h-5), self.font, 1, (255, 255, 0), 1)
                     

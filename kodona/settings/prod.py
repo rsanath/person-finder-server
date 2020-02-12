@@ -26,7 +26,8 @@ SECRET_KEY = 'v-e*#-w-5#+!@w1s=s(9p$7@#o$clv-vf!=87+f$qv3ctje1wm'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'kodona.herokuapp.com'
+    'kodona.herokuapp.com',
+    'kodona.appspot.com'
 ]
 
 
@@ -83,8 +84,8 @@ DATABASES = {
         'HOST': '/cloudsql/kodona:us-central1:kodona-database',
         'PORT': '5432',
         'USER': 'kodona_admin',
-        'PASSWORD': 'password`',
-        'NAME': 'kodona'
+        'PASSWORD': 'password',
+        'NAME': 'kodona_db'
     }
 }
 
@@ -111,7 +112,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10

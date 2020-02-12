@@ -15,7 +15,6 @@ psycopg2-binary
 # opencv stuff
 pillow
 opencv-contrib-python
-opencv-python-headless
 
 # background jobs
 redis

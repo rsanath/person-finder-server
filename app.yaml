@@ -13,3 +13,5 @@ handlers:
 - url: /.*
   script: auto
 # [END django_app]
+env_variables:
+  KODONA_ENV: 'prod'
