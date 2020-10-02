@@ -12,13 +12,14 @@ The backend server and image processor for my academic project kodona which is a
   * create a database named kodona_db
   * create a user named kodona_user password as `password`
 
+3. Install redis server
 
-3. create the database tables 
+4. create the database tables 
   * ```python3 manage.py migrate```
 
 
-4. run the server 
+5. run the server 
   * ```python3 manage.py runserver```
 
 
-5. hit the server at localhost:8000/
+6. hit the server at localhost:8000/
